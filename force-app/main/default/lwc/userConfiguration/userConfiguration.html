@@ -3,16 +3,16 @@
     <div class=" slds-is-relative slds-p-horizontal_small">
 
       <div class="form-wrapper">
-        <div style="max-width:300px;">
-          <lightning-combobox data-form-field name="objectApiName" label="Object" value={formValues.objectApiName}
-                              options={objectOptions} onchange={handleFormFieldChange} placeholder={labels.SelectObject}
-                              required></lightning-combobox>
+        <div class="slds-m-bottom_small" style="max-width:300px;">
+          <lightning-combobox data-form-field name="objectApiName" label={labels.Object}
+                              value={formValues.objectApiName} options={objectOptions} onchange={handleFormFieldChange}
+                              placeholder={labels.SelectObject} required></lightning-combobox>
         </div>
         <div if:true={isFieldsVisible} style="max-width:800px;">
-          <lightning-dual-listbox data-form-field name="fields" label="Fields" value={formValues.fields}
-                                  source-label="Available Fields" selected-label="Selected Fields"
-                                  options={objectFieldsOptions} onchange={handleFormFieldChange}
-                                  required></lightning-dual-listbox>
+          <lightning-dual-listbox data-form-field name="fields" label={labels.SelectObjectFields}
+                                  value={formValues.fields} source-label={labels.AvailableFields}
+                                  selected-label={labels.SelectedFields} options={objectFieldsOptions}
+                                  onchange={handleFormFieldChange} required></lightning-dual-listbox>
         </div>
 
         <div class="slds-p-top_medium">

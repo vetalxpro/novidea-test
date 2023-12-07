@@ -1,6 +1,7 @@
 <template>
   <lightning-card class="slds-is-relative" title={computedTitleText}>
     <div class="slds-is-relative slds-p-horizontal_small">
+
       <template lwc:if={objectInfo}>
         <div lwc:if={hasTableRows} class="table-wrapper slds-p-bottom_small" style={tableStyles}>
           <lightning-datatable columns={tableColumns} data={tableRows} key-field="Id" is-loading={isLoadMoreLoading}
@@ -8,12 +9,14 @@
                                hide-checkbox-column onloadmore={loadMoreHandler}></lightning-datatable>
         </div>
         <div lwc:else>
-          Records not found
+          {labels.RecordsNotFound}
         </div>
       </template>
+
       <template lwc:else>
-        Please set configuration in user configuration
+        {labels.SetConfiguration}
       </template>
+
       <lightning-spinner if:true={isLoading} variant="brand" size="small"></lightning-spinner>
     </div>
   </lightning-card>
