@@ -1,14 +1,17 @@
+import {
+  MessageContext,
+  subscribe,
+  unsubscribe
+} from 'lightning/messageService';
 import { LightningElement, wire } from 'lwc';
 import { labels } from './labels';
-import {
-  subscribe,
-  unsubscribe,
-  MessageContext
-} from 'lightning/messageService';
-import showObjectRecords from '@salesforce/messageChannel/showObjectRecords__c';
-import { buildTableColumns, buildTableRows } from './utils';
-import { tableSizes } from './contants';
 import getRecords from '@salesforce/apex/ObjectRecordsController.getRecords';
+// @ts-ignore
+import showObjectRecords from '@salesforce/messageChannel/showObjectRecords__c';
+import { toastService } from 'c/toastService';
+import { reduceErrorsToString } from 'c/utils';
+import { tableSizes } from './contants';
+import { buildTableColumns, buildTableRows } from './utils';
 
 export default class RecordsTable extends LightningElement {
   @wire(MessageContext)
@@ -55,6 +58,13 @@ export default class RecordsTable extends LightningElement {
       : '';
   }
 
+  get computedTitleText() {
+    if (this.objectInfo) {
+      return `${labels.Title} - ${this.objectInfo.label}`;
+    }
+    return labels.Title;
+  }
+
   subscribeToMessageChannel() {
     if (!this.subscription) {
       this.subscription = subscribe(
@@ -79,7 +89,6 @@ export default class RecordsTable extends LightningElement {
 
   updateTableColumns() {
     const { fields, objectInfo } = this.config;
-    console.log(fields, objectInfo);
     const columns = buildTableColumns(fields, objectInfo);
     this.tableColumns = columns;
   }
@@ -89,17 +98,17 @@ export default class RecordsTable extends LightningElement {
     try {
       const { fields, objectInfo } = this.config;
       const params = {
-        SObjectApiName: objectInfo.apiName,
+        objectApiName: objectInfo.apiName,
         fields: fields.join(','),
-        perPage: this.perPage
+        perPage: this.perPage,
+        lastRecordId: null
       };
-      console.log(params);
       const res = await getRecords(params);
       this.isInfiniteLoadingEnabled = true;
       this.tableRows = buildTableRows(res);
-      console.log(this.tableRows);
     } catch (err) {
-      console.error(err);
+      const errMessages = reduceErrorsToString(err);
+      toastService.error(this, { message: errMessages });
     } finally {
       this.isLoading = false;
     }
@@ -114,14 +123,12 @@ export default class RecordsTable extends LightningElement {
 
     try {
       const { fields, objectInfo } = this.config;
-
       const params = {
-        SObjectApiName: objectInfo.apiName,
+        objectApiName: objectInfo.apiName,
         fields: fields.join(','),
         perPage: this.perPage,
         lastRecordId: lastRow.Id
       };
-      console.log(params);
       const res = await getRecords(params);
       const rows = buildTableRows(res);
       if (rows.length > 0) {
@@ -129,9 +136,9 @@ export default class RecordsTable extends LightningElement {
       } else {
         this.isInfiniteLoadingEnabled = false;
       }
-      console.log(this.tableRows);
     } catch (err) {
-      console.error(err);
+      const errMessages = reduceErrorsToString(err);
+      toastService.error(this, { message: errMessages });
     } finally {
       this.isLoadMoreLoading = false;
     }

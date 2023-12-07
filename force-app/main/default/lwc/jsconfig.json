@@ -1,0 +1,25 @@
+{
+  "compilerOptions": {
+    "experimentalDecorators": true,
+    "baseUrl": ".",
+    "target": "es2015",
+    "allowUmdGlobalAccess": true,
+    "moduleResolution": "node",
+    "checkJs": true,
+    "paths": {
+      "c/toastService": ["toastService/toastService.js"],
+      "c/utils": ["utils/utils.js"]
+    }
+  },
+  "include": [
+    "**/*",
+    "../../../../.sfdx/typings/lwc/**/*.d.ts",
+    "../../../../types/**/*.d.ts"
+  ],
+  "typeAcquisition": {
+    "include": ["jest"]
+  },
+  "paths": {
+    "c/*": ["*"]
+  }
+}

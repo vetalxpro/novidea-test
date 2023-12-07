@@ -1,3 +1,13 @@
+const fieldToTableColumnTypeMapping = {
+  Currency: 'number',
+  DateTime: 'date',
+  Phone: 'phone',
+  Boolean: 'boolean',
+  Double: 'number',
+  Int: 'number',
+  Url: 'url'
+};
+
 /**
  *
  * @param {any[]} selectedFields
@@ -9,7 +19,7 @@ export function buildTableColumns(selectedFields, objectInfo) {
     const field = fields[fieldName];
     return {
       label: field.label,
-      type: 'text',
+      type: fieldToTableColumnTypeMapping[field.dataType] || 'text',
       fieldName: field.apiName
     };
   });

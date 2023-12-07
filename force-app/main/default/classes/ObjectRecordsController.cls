@@ -33,13 +33,13 @@ public with sharing class ObjectRecordsController {
 
     @AuraEnabled
     public static List<SObject> getRecords(
-        String SObjectApiName,
+        String objectApiName,
         String fields,
         Integer perPage,
         Id lastRecordId
     ) {
         try {
-            String query = 'SELECT ' + fields + ' FROM ' + SObjectApiName;
+            String query = 'SELECT ' + fields + ' FROM ' + objectApiName;
 
             if (lastRecordId != null) {
                 query += ' WHERE Id > :lastRecordId';

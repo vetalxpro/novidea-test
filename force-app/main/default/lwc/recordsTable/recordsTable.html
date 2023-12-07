@@ -1,13 +1,14 @@
 <template>
-  <lightning-card class="slds-is-relative" title="Records Table">
+  <lightning-card class="slds-is-relative" title={computedTitleText}>
     <div class="slds-is-relative slds-p-horizontal_small">
       <template lwc:if={objectInfo}>
-        <div>{objectInfo.label} records
-        </div>
-        <div class="table-wrapper slds-p-bottom_small" style={tableStyles}>
-          <lightning-datatable columns={tableColumns} data={tableRows} key-field="id" is-loading={isLoadMoreLoading}
-                               enable-infinite-loading={isInfiniteLoadingEnabled} min-column-width="80"
+        <div lwc:if={hasTableRows} class="table-wrapper slds-p-bottom_small" style={tableStyles}>
+          <lightning-datatable columns={tableColumns} data={tableRows} key-field="Id" is-loading={isLoadMoreLoading}
+                               enable-infinite-loading={isInfiniteLoadingEnabled} min-column-width="90"
                                hide-checkbox-column onloadmore={loadMoreHandler}></lightning-datatable>
+        </div>
+        <div lwc:else>
+          Records not found
         </div>
       </template>
       <template lwc:else>

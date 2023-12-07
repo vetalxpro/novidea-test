@@ -1,11 +1,14 @@
-import { LightningElement, wire } from 'lwc';
+import { MessageContext, publish } from 'lightning/messageService';
 import { getObjectInfo } from 'lightning/uiObjectInfoApi';
-import { labels } from './labels';
+import { LightningElement, wire } from 'lwc';
 import { formFieldNames } from './constants';
+import { labels } from './labels';
 import { buildFieldOptionsFromObjectInfo, buildObjectOptions } from './utils';
-import { publish, MessageContext } from 'lightning/messageService';
-import showObjectRecords from '@salesforce/messageChannel/showObjectRecords__c';
 import getObjects from '@salesforce/apex/ObjectRecordsController.getObjects';
+// @ts-ignore
+import showObjectRecords from '@salesforce/messageChannel/showObjectRecords__c';
+import { toastService } from 'c/toastService';
+import { reduceErrorsToString } from 'c/utils';
 
 export default class UserConfiguration extends LightningElement {
   @wire(MessageContext)
@@ -54,6 +57,7 @@ export default class UserConfiguration extends LightningElement {
     }
   }
 
+  /**  @returns {any[]} */
   getFormFields() {
     return [...this.template.querySelectorAll('[data-form-field]')];
   }
@@ -65,7 +69,8 @@ export default class UserConfiguration extends LightningElement {
       this.objectOptions = buildObjectOptions(res);
       console.log(this.objectOptions);
     } catch (err) {
-      console.error(err);
+      const errMessages = reduceErrorsToString(err);
+      toastService.error(this, { message: errMessages });
     } finally {
       this.isLoading = false;
     }
