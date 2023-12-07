@@ -53,7 +53,9 @@ export default class UserConfiguration extends LightningElement {
     }
     if (data) {
       this.objectInfo = data;
-      this.objectFieldsOptions = buildFieldOptionsFromObjectInfo(data);
+      this.objectFieldsOptions = buildFieldOptionsFromObjectInfo(
+        this.objectInfo
+      );
     }
   }
 
@@ -67,7 +69,9 @@ export default class UserConfiguration extends LightningElement {
     try {
       const res = await getObjects();
       this.objectOptions = buildObjectOptions(res);
-      console.log(this.objectOptions);
+      // this.formValues = Object.assign({}, this.formValues, {
+      //   objectApiName: this.objectOptions[0].value
+      // });
     } catch (err) {
       const errMessages = reduceErrorsToString(err);
       toastService.error(this, { message: errMessages });
@@ -83,11 +87,13 @@ export default class UserConfiguration extends LightningElement {
       formValues.fields = [];
       this.isLoading = true;
     }
-    console.log(this.formValues);
     this.formValues = formValues;
   }
 
   handleSubmitClick() {
+    if (this.isSubmitButtonDisabled) {
+      return;
+    }
     const isValid = this.validateFormValues();
     if (!isValid) {
       return;

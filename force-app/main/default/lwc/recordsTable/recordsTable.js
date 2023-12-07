@@ -60,9 +60,15 @@ export default class RecordsTable extends LightningElement {
 
   get computedTitleText() {
     if (this.objectInfo) {
-      return `${labels.Title} - ${this.objectInfo.label}`;
+      return `${labels.Title} - ${this.objectInfo.labelPlural}`;
     }
     return labels.Title;
+  }
+
+  /**@returns {HTMLElement} */
+  getCardEl() {
+    // @ts-ignore
+    return this.refs && this.refs.card;
   }
 
   subscribeToMessageChannel() {
@@ -77,9 +83,17 @@ export default class RecordsTable extends LightningElement {
 
   showObjectRecordsHandler(message) {
     this.config = message.config;
-    this.tableRows = [];
-    this.updateTableColumns();
     this.fetchRecords();
+  }
+
+  scrollToCard() {
+    // eslint-disable-next-line @lwc/lwc/no-async-operation
+    setTimeout(() => {
+      const cardEl = this.getCardEl();
+      if (cardEl) {
+        cardEl.scrollIntoView({ behavior: 'smooth' });
+      }
+    }, 0);
   }
 
   unsubscribeToMessageChannel() {
@@ -105,8 +119,11 @@ export default class RecordsTable extends LightningElement {
       };
       const res = await getRecords(params);
       this.isInfiniteLoadingEnabled = true;
+      this.updateTableColumns();
       this.tableRows = buildTableRows(res);
+      this.scrollToCard();
     } catch (err) {
+      this.tableRows = [];
       const errMessages = reduceErrorsToString(err);
       toastService.error(this, { message: errMessages });
     } finally {
