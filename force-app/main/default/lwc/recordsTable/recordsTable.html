@@ -1,0 +1,19 @@
+<template>
+  <lightning-card class="slds-is-relative" title="Records Table">
+    <div class="slds-is-relative slds-p-horizontal_small">
+      <template lwc:if={objectInfo}>
+        <div>{objectInfo.label} records
+        </div>
+        <div class="table-wrapper slds-p-bottom_small" style={tableStyles}>
+          <lightning-datatable columns={tableColumns} data={tableRows} key-field="id" is-loading={isLoadMoreLoading}
+                               enable-infinite-loading={isInfiniteLoadingEnabled} min-column-width="80"
+                               hide-checkbox-column onloadmore={loadMoreHandler}></lightning-datatable>
+        </div>
+      </template>
+      <template lwc:else>
+        Please set configuration in user configuration
+      </template>
+      <lightning-spinner if:true={isLoading} variant="brand" size="small"></lightning-spinner>
+    </div>
+  </lightning-card>
+</template>
