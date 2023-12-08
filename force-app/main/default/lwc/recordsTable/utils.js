@@ -5,7 +5,8 @@ const fieldToTableColumnTypeMapping = {
   Boolean: 'boolean',
   Double: 'number',
   Int: 'number',
-  Url: 'url'
+  Url: 'url',
+  Email: 'email'
 };
 
 /**
