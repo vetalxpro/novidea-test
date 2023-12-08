@@ -6,7 +6,7 @@ import { labels } from './labels';
 import { buildFieldOptionsFromObjectInfo, buildObjectOptions } from './utils';
 import getObjects from '@salesforce/apex/ObjectRecordsController.getObjects';
 // @ts-ignore
-import showObjectRecords from '@salesforce/messageChannel/showObjectRecords__c';
+import showObjectRecordsChannel from '@salesforce/messageChannel/showObjectRecords__c';
 import { toastService } from 'c/toastService';
 import { reduceErrorsToString } from 'c/utils';
 
@@ -107,7 +107,7 @@ export default class UserConfiguration extends LightningElement {
       }
     };
 
-    publish(this.messageContext, showObjectRecords, payload);
+    publish(this.messageContext, showObjectRecordsChannel, payload);
   }
 
   validateFormValues() {

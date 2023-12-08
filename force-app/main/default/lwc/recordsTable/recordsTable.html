@@ -4,18 +4,19 @@
 
       <template lwc:if={objectInfo}>
         <div lwc:if={hasTableRows} class="table-wrapper slds-p-bottom_small" style={tableStyles}>
-          <lightning-datatable columns={tableColumns} data={tableRows} key-field="Id" is-loading={isLoadMoreLoading}
-                               enable-infinite-loading={isInfiniteLoadingEnabled} min-column-width="90"
-                               hide-checkbox-column onloadmore={loadMoreHandler}></lightning-datatable>
+          <lightning-datatable data-testid="datatable" columns={tableColumns} data={tableRows} key-field="Id"
+                               is-loading={isLoadMoreLoading} enable-infinite-loading={isInfiniteLoadingEnabled}
+                               min-column-width="90" hide-checkbox-column
+                               onloadmore={loadMoreHandler}></lightning-datatable>
         </div>
-        <div lwc:else>
+        <div lwc:else data-testid="not-found-message">
           {labels.RecordsNotFound}
         </div>
       </template>
 
-      <template lwc:else>
+      <div lwc:else data-testid="set-config-message">
         {labels.SetConfiguration}
-      </template>
+      </div>
 
       <lightning-spinner if:true={isLoading} variant="brand" size="small"></lightning-spinner>
     </div>

@@ -4,20 +4,21 @@
 
       <div class="form-wrapper">
         <div class="slds-m-bottom_small" style="max-width:300px;">
-          <lightning-combobox data-form-field name="objectApiName" label={labels.Object}
+          <lightning-combobox data-testid="objectsCombobox" data-form-field name="objectApiName" label={labels.Object}
                               value={formValues.objectApiName} options={objectOptions} onchange={handleFormFieldChange}
                               placeholder={labels.SelectObject} required></lightning-combobox>
         </div>
         <div if:true={isFieldsVisible} style="max-width:800px;">
-          <lightning-dual-listbox data-form-field name="fields" label={labels.SelectObjectFields}
-                                  value={formValues.fields} source-label={labels.AvailableFields}
-                                  selected-label={labels.SelectedFields} options={objectFieldsOptions}
-                                  onchange={handleFormFieldChange} required></lightning-dual-listbox>
+          <lightning-dual-listbox data-testid="fieldsListbox" data-form-field name="fields"
+                                  label={labels.SelectObjectFields} value={formValues.fields}
+                                  source-label={labels.AvailableFields} selected-label={labels.SelectedFields}
+                                  options={objectFieldsOptions} onchange={handleFormFieldChange}
+                                  required></lightning-dual-listbox>
         </div>
 
         <div class="slds-p-top_medium">
-          <lightning-button variant="brand" label={labels.LoadRecords} disabled={isSubmitButtonDisabled}
-                            onclick={handleSubmitClick}>
+          <lightning-button data-testid="submitButton" variant="brand" label={labels.LoadRecords}
+                            disabled={isSubmitButtonDisabled} onclick={handleSubmitClick}>
           </lightning-button>
         </div>
       </div>
